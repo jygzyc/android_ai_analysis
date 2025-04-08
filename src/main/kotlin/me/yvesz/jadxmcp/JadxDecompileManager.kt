@@ -2,15 +2,10 @@ package me.yvesz.jadxmcp.config
 
 import jadx.api.JadxArgs
 import jadx.api.JadxDecompiler
-import org.springframework.beans.factory.InitializingBean
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.context.annotation.Bean
-import org.springframework.stereotype.Component
-import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 
-object JadxDecompiler {
+object JadxDecompileManager {
 
     private var jadxDecompiler: JadxDecompiler? = null
 
