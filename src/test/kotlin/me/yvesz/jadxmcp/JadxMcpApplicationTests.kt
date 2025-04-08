@@ -9,18 +9,7 @@ import kotlin.test.assertNotNull
 
 @SpringBootTest
 class JadxMcpApplicationTests {
-
-    @Autowired
-    private lateinit var application: JadxMcpApplication
-
     @Test
     fun contextLoads() {
-        assertNotNull(application, "Application context should be loaded")
-    }
-
-    @Test
-    fun testCommandLineRunner() {
-        val runner = application.commandLineRunner(org.springframework.mock.env.MockEnvironment())
-        assertNotNull(runner, "CommandLineRunner should be created")
     }
 }

@@ -1,6 +1,6 @@
 package me.yvesz.jadxmcp.services
 
-import me.yvesz.jadxmcp.config.JadxDecompilerManager
+import me.yvesz.jadxmcp.JadxDecompiler
 import org.slf4j.LoggerFactory
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.stereotype.Service
@@ -10,7 +10,7 @@ class JavaClassService {
     
     companion object {
         private val log = LoggerFactory.getLogger(JavaClassService::class.java)
-        private val decompiler = JadxDecompilerManager.getInstance()
+        private val decompiler = JadxDecompiler.getInstance()
     }
 
     @Tool(name = "get_class_code", description = "Get the string of the class code decompiled by jadx")
