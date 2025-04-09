@@ -1,8 +1,8 @@
-package me.yvesz.jadxmcp.services
+package me.yvesz.jadxmcp.service
 
 import jadx.api.JavaClass
 import me.yvesz.jadxmcp.JadxMcpApplication
-import me.yvesz.jadxmcp.config.JadxDecompileManager
+import me.yvesz.jadxmcp.decompiler.JadxDecompilerManager
 import org.slf4j.LoggerFactory
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.stereotype.Service
@@ -19,18 +19,12 @@ class JavaClassService {
         log.info("Getting class code for: {}", className)
         
         try {
-            // Find the class in the decompiler
-            val decompiler = JadxMcpApplication.jadxDecompiler.getInstance()
-            if (decompiler == null) {
-                return "Decompiler not initialized"
-            }
-            
-            // Find the class by its full name
+            val decompiler = JadxDecompilerManager.getInstance().getJadxDecompiler()
             val javaClass = decompiler.classes.find { it.fullName == className }
                 ?: return "Class not found: $className"
             
             // Return the decompiled class code
-            return javaClass.code ?: "No code available for class: $className"
+            return javaClass.code
         } catch (e: Exception) {
             log.error("Error getting class code", e)
             return "Error: ${e.message}"

@@ -1,8 +1,7 @@
-package me.yvesz.jadxmcp.services
+package me.yvesz.jadxmcp.service
 
 import jadx.api.JavaMethod
-import me.yvesz.jadxmcp.JadxMcpApplication
-import me.yvesz.jadxmcp.config.JadxDecompileManager
+import me.yvesz.jadxmcp.decompiler.JadxDecompilerManager
 import org.slf4j.LoggerFactory
 import org.springframework.ai.tool.annotation.Tool
 import org.springframework.stereotype.Service
