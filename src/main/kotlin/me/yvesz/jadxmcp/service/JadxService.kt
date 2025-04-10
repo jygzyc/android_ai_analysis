@@ -14,7 +14,6 @@ import java.io.File
 
 import me.yvesz.jadxmcp.utils.MethodSignatureParser
 
-
 @Service
 class JadxService {
 
@@ -32,6 +31,14 @@ class JadxService {
         }
     }
 
+    /**
+     * Initializes the JADX decompiler with specified configuration options.
+     * This function must be called before using any decompilation features.
+     * It sets up the decompiler with appropriate settings for analyzing Android APK/DEX files.
+     *
+     * @param inputPath Path to the input file (APK or DEX) to be decompiled
+     * @param outputPath Directory where decompiled files will be saved
+     */
     @Tool(name = "init_jadx", description = "Initialize the jadx decompiler before use")
     fun initJadxDecompiler(inputPath: String = "", outputPath: String = ""){
         val jadxArgs = JadxArgs().apply{

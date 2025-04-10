@@ -24,13 +24,7 @@ extra["springAiVersion"] = "1.0.0-M6"
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.ai:spring-ai-anthropic-spring-boot-starter")
-	implementation("org.springframework.ai:spring-ai-mcp-client-spring-boot-starter")
 	implementation("org.springframework.ai:spring-ai-mcp-server-spring-boot-starter")
-	implementation("org.springframework.ai:spring-ai-ollama-spring-boot-starter")
-	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	// https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-mcp-server-webmvc-spring-boot-starter
 	implementation("org.springframework.ai:spring-ai-mcp-server-webmvc-spring-boot-starter")
 
 	implementation("io.github.skylot:jadx-core:1.5.1")

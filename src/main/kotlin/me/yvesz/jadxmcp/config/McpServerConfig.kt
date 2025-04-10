@@ -1,16 +1,26 @@
 package me.yvesz.jadxmcp.config
 
-import me.yvesz.jadxmcp.service.JadxService
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.ai.tool.ToolCallbackProvider
 import org.springframework.ai.tool.method.MethodToolCallbackProvider
+import org.springframework.context.ApplicationContext
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.stereotype.Service
 
 @Configuration
 class McpServerConfig {
 
     @Bean
-    fun jadxTools(jadxService: JadxService): ToolCallbackProvider {
-        return MethodToolCallbackProvider.builder().toolObjects(jadxService).build()
+    fun autoRegisterTools(applicationContext: ApplicationContext): ToolCallbackProvider {
+        val beanNames: Array<String> = applicationContext.getBeanNamesForAnnotation(Service::class.java)
+        val serviceBeans: MutableList<Any> = ArrayList()
+        for (beanName in beanNames) {
+            if (beanName.endsWith("Service")) {
+                serviceBeans.add(applicationContext.getBean(beanName))
+            }
+        }
+        return MethodToolCallbackProvider.builder()
+            .toolObjects(*serviceBeans.toTypedArray())
+            .build()
     }
 }
