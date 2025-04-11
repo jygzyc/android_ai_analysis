@@ -1,11 +1,18 @@
 package me.yvesz.jadxmcp.utils
 
 /**
- * 用于解析Java方法签名的工具类
- * 例如：test2(Ljava/lang/String;)V 将被解析为：
- * - 方法名：test2
- * - 参数类型：[java.lang.String]
- * - 返回类型：void
+ * A utility class for parsing Java method signatures.
+ * 
+ * This class parses method signatures in JVM format and extracts method name,
+ * parameter types, and return type information. It handles various Java types including
+ * primitives, arrays, and reference types.
+ * 
+ * Example: "test2(Ljava/lang/String;)V" will be parsed as:
+ * - Method name: test2
+ * - Parameter types: [java.lang.String]
+ * - Return type: void
+ *
+ * @property signature The method signature string in JVM format to be parsed
  */
 class MethodSignatureParser(private val signature: String) {
     
@@ -14,11 +21,9 @@ class MethodSignatureParser(private val signature: String) {
     private val returnType: String
     
     init {
-        // 解析方法名
         val nameEndIndex = signature.indexOf('(')
         methodName = if (nameEndIndex > 0) signature.substring(0, nameEndIndex) else signature
         
-        // 解析参数类型
         val paramTypesStr = if (nameEndIndex > 0 && signature.contains(")")) {
             val paramStart = nameEndIndex + 1
             val paramEnd = signature.lastIndexOf(')')
@@ -27,7 +32,6 @@ class MethodSignatureParser(private val signature: String) {
         
         parameterTypes = parseParameterTypes(paramTypesStr)
         
-        // 解析返回类型
         val returnTypeStr = if (signature.contains(")")) {
             val returnStart = signature.lastIndexOf(')') + 1
             if (returnStart < signature.length) signature.substring(returnStart) else "V"
@@ -37,22 +41,31 @@ class MethodSignatureParser(private val signature: String) {
     }
     
     /**
-     * 获取方法名
+     * Gets the method name extracted from the signature.
+     * 
+     * @return The name of the method
      */
     fun getMethodName(): String = methodName
     
     /**
-     * 获取参数类型列表
+     * Gets the list of parameter types extracted from the signature.
+     * 
+     * @return A list of parameter type names in their Java representation
      */
     fun getParameterTypes(): List<String> = parameterTypes
     
     /**
-     * 获取返回类型
+     * Gets the return type extracted from the signature.
+     * 
+     * @return The return type in its Java representation
      */
     fun getReturnType(): String = returnType
     
     /**
-     * 解析参数类型字符串为类型列表
+     * Parses the parameter types string into a list of Java type names.
+     * 
+     * @param paramTypesStr The string containing parameter types in JVM format
+     * @return A list of parameter types converted to their Java representation
      */
     private fun parseParameterTypes(paramTypesStr: String): List<String> {
         if (paramTypesStr.isEmpty()) return emptyList()
@@ -70,8 +83,11 @@ class MethodSignatureParser(private val signature: String) {
     }
     
     /**
-     * 从给定位置解析下一个类型
-     * @return Pair<解析后的类型, 下一个开始位置>
+     * Parses the next type descriptor from the given position in the string.
+     * 
+     * @param str The string containing type descriptors in JVM format
+     * @param startIndex The starting position to parse from
+     * @return A pair containing the parsed type and the next position to continue parsing
      */
     private fun parseNextType(str: String, startIndex: Int): Pair<String, Int> {
         if (startIndex >= str.length) return Pair("", str.length)
@@ -79,7 +95,6 @@ class MethodSignatureParser(private val signature: String) {
         val c = str[startIndex]
         return when (c) {
             'L' -> {
-                // 引用类型 Ljava/lang/String;
                 val endIndex = str.indexOf(';', startIndex)
                 if (endIndex == -1) {
                     Pair(str.substring(startIndex), str.length)
@@ -89,7 +104,6 @@ class MethodSignatureParser(private val signature: String) {
                 }
             }
             '[' -> {
-                // 数组类型 [Ljava/lang/String;
                 val (componentType, nextIndex) = parseNextType(str, startIndex + 1)
                 Pair("$componentType[]", nextIndex)
             }
@@ -107,7 +121,10 @@ class MethodSignatureParser(private val signature: String) {
     }
     
     /**
-     * 解析Java类型描述符
+     * Parses a Java type descriptor into its Java representation.
+     * 
+     * @param typeDesc The type descriptor in JVM format
+     * @return The Java representation of the type
      */
     private fun parseJavaType(typeDesc: String): String {
         if (typeDesc.isEmpty()) return ""
