@@ -22,10 +22,10 @@ repositories {
 extra["springAiVersion"] = "1.0.0-M6"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.springframework.ai:spring-ai-mcp-server-spring-boot-starter")
-	implementation("org.springframework.ai:spring-ai-mcp-server-webmvc-spring-boot-starter")
+	implementation("com.google.code.gson:gson:2.10.1")
 
 	implementation("io.github.skylot:jadx-core:1.5.1")
 	implementation("io.github.skylot:jadx-cli:1.5.1")
@@ -36,12 +36,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
-	}
 }
 
 kotlin {

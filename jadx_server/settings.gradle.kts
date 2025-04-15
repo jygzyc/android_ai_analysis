@@ -1,2 +1,2 @@
-rootProject.name = "jadxmcp"
+rootProject.name = "jadxServer"
 

@@ -1,3 +1,2 @@
-# Jadx MCP Server
+# android analysis
 
-使用该项目进行Android框架侧问题挖掘

@@ -8,11 +8,11 @@ its HTTP API, allowing AI assistants to analyze and navigate Android application
 
 import sys
 import httpx
-from typing import List, Optional, Dict, Any
+from typing import List, Optional
 from mcp.server.fastmcp import FastMCP
 
 # Default JADX server address if not provided as command line argument
-DEFAULT_JADX_SERVER = "http://127.0.0.1:8080"
+DEFAULT_JADX_SERVER = "http://127.0.0.1:8080/api/jadx"
 # Get JADX server URI from command line or use default
 jadx_server_uri = sys.argv[1].rstrip('/') if len(sys.argv) > 1 else DEFAULT_JADX_SERVER
 
@@ -131,11 +131,6 @@ async def get_smali_of_class(class_name: str) -> str:
     return await get_from_jadx("get_smali_of_class", {"class": class_name})
 
 
-@mcp.tool(name="get_smali_of_method", description="Retrieve the Smali bytecode representation of a specific method.")
-async def get_smali_of_method(class_name: str, method_name: str) -> str:
-    return await get_from_jadx("get_smali_of_method", {"class": class_name, "method": method_name})
-
-
 @mcp.tool(name="get_implementation_of_interface", description="Find all classes that implement a specific interface.")
 async def get_implementation_of_interface(interface_name: str) -> List[str]:
     response = await get_from_jadx("get_implementation_of_interface", {"interface": interface_name})
@@ -152,22 +147,6 @@ async def get_superclasses_of_class(class_name: str) -> List[str]:
 async def find_xref_of_method(class_name: str, method_name: str) -> List[str]:
     response = await get_from_jadx("find_xref_of_method", {"class": class_name, "method": method_name})
     return response.splitlines() if response else []
-
-
-@mcp.tool(name="fetch_current_class", description="Fetch the currently selected class and its code from the JADX-GUI plugin.")
-async def fetch_current_class() -> Dict[str, Any]:
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(f"{jadx_server_uri}/current-class", timeout=10.0)
-            response.raise_for_status()
-            return response.json()
-    except httpx.HTTPError as e:
-        return {"error": f"Failed to fetch from JADX plugin: {str(e)}"}
-
-
-@mcp.tool(name="get_selected_text", description="Retrieve the text currently selected in the JADX-GUI code view.")
-async def get_selected_text() -> str:
-    return await get_from_jadx("selected_text")
 
 
 if __name__ == "__main__":
